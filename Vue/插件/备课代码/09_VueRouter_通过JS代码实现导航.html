@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			height: 600px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.menu li:last-child {
+			border-bottom: none;
+		}
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="app">
+
+		<ul class="menu">
+			<li><router-link to="/">首页</router-link></li>
+			<li><router-link to="/about">关于我们</router-link></li>
+			<li><router-link to="/contact">联系我们</router-link></li>
+			<li><router-link to="/profile">个人中心</router-link></li>
+			<li>
+				<input type="text" v-model.trim="routerName">
+				<input type="button" value="前进" @click="next">
+			</li>
+			<li>
+				<input type="text" v-model.trim="replaceName">
+				<input type="button" value="替换" @click="replace">
+			</li>
+			<li>
+				<input type="number" v-model.number="step">
+				<input type="button" value="跳转" @click="go">
+			</li>
+		</ul>
+
+		<router-view></router-view>
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+
+		var Home = Vue.extend({		
+			template: '<div class="main">主页的内容</div>'
+		});
+
+		var About = Vue.extend({
+			template: '<div class="main">关于我们页面的内容</div>'
+		});
+
+		var Contact = Vue.extend({
+			template: '<div class="main">联系我们页面的内容</div>'
+		});
+
+		var Profile = Vue.extend({
+			template: '<div class="main">个人中心页面的内容</div>'
+		});
+
+		var routes = [
+			{
+				path: '/', 
+				name: 'home',
+				component: Home
+			},
+			{
+				path: '/about', 
+				name: 'about',
+				component: About
+	    },
+			{
+				path: '/contact', 
+				name: 'contact',
+				component: Contact
+	    },
+			{
+				path: '/profile', 
+				name: 'profile',
+				component: Profile
+	    }
+		];
+
+		var router = new VueRouter({
+			routes: routes
+		});
+		
+		var vm = new Vue({
+			el: '#app',
+			router: router,
+			data: {
+				replaceName: '',			// 要替换的路径
+				routerName: '',				// 要前进的路径
+				step: 0,							// 前进或回退的步数
+				history: []						// 记录历史
+			},
+			methods: {
+				next(){
+					this.$options.router.push(this.routerName, function(){
+
+					}, function(){
+
+					});
+				},
+				replace(){
+
+					this.$options.router.replace(this.replaceName, function(){
+
+					}, function(){
+
+					});
+				},
+				go(){
+					this.$options.router.go(this.step);
+				}
+			}
+		});
+	</script>
+</body>
+</html>

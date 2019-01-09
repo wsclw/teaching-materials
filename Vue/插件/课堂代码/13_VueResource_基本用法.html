@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+		<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			height: 600px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+/* 		.menu li:last-child {
+	border-bottom: none;
+} */
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="app">
+		<ul class="menu">
+			<li><router-link :to="{name: 'home'}">主页</router-link></li>
+			<li><router-link :to="{name: 'list'}">学生列表</router-link></li>
+		</ul>
+		<!-- 默认的视图，没有明确指定视图名字的组件会显示到这里： -->
+		<router-view></router-view>
+
+	</div>
+
+	<template id="stulist_temp">
+		<div class="main">
+			<table>
+				<tbody>
+					<tr v-for="stu in stuData.pageData" :key="stu.stuId">
+						<td>{{stu.stuId}}</td>
+						<td>{{stu.stuName}}</td>
+						<td>{{stu.stuGender}}</td>
+						<td>{{stu.stuAge}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</template>
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script src="./vue-resource.js"></script>
+	<script>
+
+		var Home = Vue.extend({
+			template: '<div class="main">主页的内容</div>'
+		});
+
+		var StudentList = Vue.extend({
+			data: function(){
+				return {
+					stuData: {}
+				}
+			},
+		  watch: {
+		    // 如果路由有变化，会再次执行该方法
+		    '$route': 'getStuList'
+		  },
+			methods: {
+				getStuList: function(){
+					this.$http.get('http://192.168.0.171:8080/RenRenKeJi/ListStudentAll.action').then(function(response){
+						console.log(response)
+						this.stuData = response.body;
+					},function(response){
+
+					});
+				}
+			},
+			template: '#stulist_temp',
+			created: function(){
+				this.getStuList();
+			}
+		});
+
+		
+
+
+		// 2. 配置路由规则
+		// 每个路由应该对应到一个组件。
+		var myRoutes = [
+			{
+				path: '/', 
+				name: 'home',
+				component: Home,			
+			},
+			{
+				path: '/list',
+				name: 'list',
+				component: StudentList,
+			}
+		];
+
+
+		// 3. 创建一个VueRouter的实例对象
+		var myRouter = new VueRouter({
+
+			routes: myRoutes
+
+		});
+
+		
+		// 4. 创建Vue实例，将上一步创建的VueRouter实例赋值给router选项
+		var vm = new Vue({
+
+			router: myRouter
+
+		}).$mount('#app');
+
+
+	</script>
+</body>
+</html>

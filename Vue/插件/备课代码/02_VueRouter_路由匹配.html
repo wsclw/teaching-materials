@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="box">
+		  <p><router-link to="/list/1">第一页</router-link></p>
+		  <p><router-link to="/list/2">第二页</router-link></p>
+
+		  <router-view></router-view>
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		var List = Vue.extend({		
+			template: '<div>{{this.$route.params.page}}</div>'
+		});
+
+		var router = new VueRouter({
+			routes: [
+				{path: '/list/:page', component: List}
+			]
+		});
+		
+		var vm = new Vue({
+			el: '#box',
+			router: router
+		});
+	</script>
+</body>
+</html>

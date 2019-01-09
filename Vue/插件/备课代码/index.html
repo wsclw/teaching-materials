@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.menu li:last-child {
+			border-bottom: none;
+		}
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="app">
+
+		<ul class="menu">
+			<li><router-link to="/">首页</router-link></li>
+			<li><router-link to="/about/9527">关于我们</router-link></li>
+		</ul>
+
+		<router-view></router-view>
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		var Home = Vue.extend({		
+			template: '<div class="main">主页的内容</div>'
+		});
+
+		var About = Vue.extend({
+			props: ['id'],
+			template: '<div class="main" @click="getRoute">Hello{{id}}</div>',
+			methods: {
+				getRoute: function(){
+					console.log(this.$route)
+				}
+			}
+		});
+
+		var routes = [
+			{
+				path: '/', 
+				name: 'home',
+				component: Home
+			},
+			{
+				path: '/about/:id', 
+				name: 'about',
+				component: About,
+				props: true
+	    }
+		];
+
+		var router = new VueRouter({
+			mode: 'history',
+			routes: routes
+		});
+		
+		var vm = new Vue({
+			el: '#app',
+			router: router
+		});
+	</script>
+</body>
+</html>

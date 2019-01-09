@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="box">
+		 	<h1>Hello App!</h1>
+
+		  <p><router-link to="/home">主页</router-link></p>
+		  <p><router-link to="/about">关于我们</router-link></p>
+
+		  <router-view></router-view>
+	</div>
+
+	<script id="about_template" type="x-template">
+		<div>
+			<p>关于我们的内容</p>
+			<ul>
+				<li><router-link to="/about/post">文章</router-link></li>
+				<li><router-link to="/about/list">列表</router-link></li>
+			</ul>
+			<router-view></router-view>
+		</div>
+	</script>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		// 1. 创建组件
+		var Home = Vue.extend({		
+			template: '<div>主页的内容</div>'
+		});
+
+		var About = Vue.extend({		
+			template: '#about_template'
+		});
+
+		var Post = Vue.extend({		
+			template: '<div>文章页面的内容</div>'
+		});
+
+		var List = Vue.extend({		
+			template: '<div>列表页面的内容</div>'
+		});
+
+
+
+
+
+		// 2. 配置路由
+		// 每个路由应该映射一个组件。
+		var routes = [
+			{
+				path: '/home', 
+				component: Home
+			},
+			{
+				path: '/about', 
+				component: About, 
+				children: [
+	        {
+	          path: 'post',
+	          component: Post
+	        },
+	        {
+	          path: 'list',
+	          component: List
+	        }
+	      ]
+	    }
+		];
+
+		// 3. 创建router实例，然后将上面创建的路由配置传递给 `routes` 选项
+		var router = new VueRouter({
+			routes: routes
+		});
+		
+		// 4. 创建Vue实例，然后将上一步创建的router实例传递给router选项
+		new Vue({
+			el: '#box',
+			router: router
+		});
+	</script>
+</body>
+</html>

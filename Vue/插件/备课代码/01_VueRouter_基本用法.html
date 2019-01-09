@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="box">
+		 	<h1>Hello App!</h1>
+		  
+	    <!-- 使用 router-link 组件来导航. -->
+	    <!-- 通过传入 `to` 属性指定链接. -->
+	    <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+		  <p><router-link to="/home">主页</router-link></p>
+		  <p><router-link to="/about">关于我们</router-link></p>
+		  <!-- 路由出口 -->
+		  <!-- 路由匹配到的组件将渲染在这里 -->
+		  <router-view></router-view>
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		// 1. 创建组件
+		var Home = Vue.extend({		
+			template: '<div>主页的内容</div>'
+		});
+
+		var About = Vue.extend({		
+			template: '<div>关于我们的内容</div>'
+		});
+
+		// 2. 配置路由
+		// 每个路由应该映射一个组件。
+		var routes = [
+			{path: '/home', component: Home},
+			{path: '/about', component: About}
+		];
+
+		// 3. 创建router实例，然后将上面创建的路由配置传递给 `routes` 选项
+		var router = new VueRouter({
+			routes: routes
+		});
+		
+		// 4. 创建Vue实例，然后将上一步创建的router实例传递给router选项
+		new Vue({
+			el: '#box',
+			router: router
+		});
+	</script>
+</body>
+</html>

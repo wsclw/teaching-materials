@@ -1,0 +1,1 @@
+function multiply(n,i){return n*i}function divide(n,i){return n/i}

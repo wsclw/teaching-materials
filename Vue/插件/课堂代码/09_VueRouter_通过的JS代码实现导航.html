@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+		<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.menu li:last-child {
+			border-bottom: none;
+		}
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="app">
+		<ul class="menu">
+			<li><router-link :to="{name: 'home'}">主页</router-link></li>
+			<li><router-link :to="{name: 'list'}">文章列表</router-link></li>
+			<li><router-link to="/cate">文章分类</router-link></li>
+			<li>
+				<input type="text" v-model.trim="routeName">
+				<input type="button" value="前进" @click="nextPage">
+			</li>
+			<li>
+				<input type="number" v-model.number="step">
+				<input type="button" value="穿越" @click="goStep">
+			</li>
+			<li>
+				<input type="text" v-model.trim="replaceName">
+				<input type="button" value="替换" @click="replacePage">
+			</li>
+		</ul>
+		<!-- 默认的视图，没有明确指定视图名字的组件会显示到这里： -->
+		<router-view></router-view>
+
+	</div>
+
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		
+		// 无论是哪种传递方式，在组件中必须使用props选项接收传入的数据
+		var Home = Vue.extend({
+			template: '<div class="main">主页的内容</div>'
+		});
+
+		var PostList = Vue.extend({
+			template: '<div class="main">假装这里有很多文章</div>'
+		});
+
+		var PostCategory = Vue.extend({
+			template: '<div class="main"><ul><li>现代小说</li><li>古典文学</li></ul></div>'
+		});
+
+
+		// 2. 配置路由规则
+		// 每个路由应该对应到一个组件。
+		var myRoutes = [
+			{
+				path: '/', 
+				name: 'home',
+				component: Home,			
+			},
+			{
+				path: '/list',
+				name: 'list',
+				component: PostList,
+			},
+			{
+				path: '/category',
+				name: 'cate',
+				component: PostCategory,
+				alias: '/cate'					// 给路径创建别名
+			}
+		];
+
+
+		// 3. 创建一个VueRouter的实例对象
+		var myRouter = new VueRouter({
+
+			routes: myRoutes
+
+		});
+
+		// 4. 创建Vue实例，将上一步创建的VueRouter实例赋值给router选项
+		var vm = new Vue({
+			data: {
+				routeName: '',
+				step: 0,
+				replaceName: ''
+			},
+			methods: {
+				nextPage: function(){
+					this.$router.push(this.routeName, function(to){
+						console.log(arguments)
+					}, function(){});
+					// console.log(this.router)
+				},
+				goStep: function(){
+					this.$router.go(this.step);
+				},
+				replacePage: function(){
+					this.$router.replace(this.replaceName, function(to){
+						console.log(arguments)
+					}, function(){});
+				}
+			},
+
+			router: myRouter
+
+		}).$mount('#app');
+
+
+	</script>
+</body>
+</html>
