@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <div v-on:click="parent">
+            <a href="https://www.baidu.com" v-on:click.prevent.stop="sayHello">点我</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>window.Vue || document.write('<script src="./vue.js"><\/script>')</script>
+    <script>
+    
+    // 创建Vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        },
+        methods: {
+            parent: function(){
+                console.log('接收到传播过来的点击事件')
+            },
+            sayHello: function() {
+                console.log(this.message)
+            }
+        }
+    });
+
+    
+
+    </script>
+
+</body>
+</html>

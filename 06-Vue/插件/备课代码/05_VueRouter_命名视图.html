@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.menu li:last-child {
+			border-bottom: none;
+		}
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.sidebar {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			width: 200px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		
+		}
+
+
+	</style>
+</head>
+<body>
+	<div id="app">
+
+		<ul class="menu">
+			<li><router-link to="/">首页</router-link></li>
+			<li><router-link to="/post">文章</router-link></li>
+		</ul>
+
+		<router-view></router-view>
+		<router-view name="main"></router-view>
+		<router-view name="sidebar"></router-view>
+
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+
+		var Home = Vue.extend({
+				template: '<div class="main">首页内容</div>'
+		});
+
+		var PostList = Vue.extend({
+				template: '<div class="main">文章列表，假装这里有很多文件</div>'
+		});
+
+		var PostCategory = Vue.extend({
+				template: '<ul class="sidebar"><li><a href="#">现代小说</a></li><li><a href="#">古典文学</a></li></ul>'
+		});
+
+		var router = new VueRouter({
+			routes: [
+				{
+					path: '/', 
+					name: 'home',
+					component: Home
+				},
+				{
+					path: '/post', 
+					name: 'post',
+					components: {
+						main: PostList,
+						sidebar: PostCategory
+					}
+		    }
+			]
+		});
+		
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				currentPage: 'home'
+			},
+			router: router
+		});
+	</script>
+</body>
+</html>
+
+
+

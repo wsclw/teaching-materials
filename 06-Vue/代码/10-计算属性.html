@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+       <h1>用户的名字：{{username}}</h1>
+       <h1>用户的等级：{{level}}</h1>
+       <h1>修改用户名：<input type="text" v-model="username"></h1>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>window.Vue || document.write('<script src="./vue.js"><\/script>')</script>
+    <script>
+    
+    // 创建Vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            num: 2000,
+            firstName: '赵四',
+            lastName: '尼古拉斯'
+        },
+        computed: {
+            level: function() {
+                if (this.num >= 5000) {
+                    return '钻石会员';
+                } else if(this.num >= 4000) {
+                    return '铂金会员';
+                } else if(this.num >= 3000) {
+                    return '金牌会员';
+                } else if(this.num >= 2000) {
+                    return '银牌会员';
+                } else {
+                    return '铜牌会员';
+                }
+            },
+            username: {
+                get: function() {
+                    return this.firstName + ' . ' +this.lastName;
+                },
+                set: function(newName) {
+                    var fullName = newName.split('.');
+                    this.firstName = fullName[0].trim();
+                    this.lastName = fullName[1].trim();
+                }
+            }
+        }
+    });
+
+    
+
+    </script>
+
+</body>
+</html>

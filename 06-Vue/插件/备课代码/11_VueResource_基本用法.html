@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		#app {
+			overflow: hidden;
+		}
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			height: 600px;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+		.menu li {
+			padding: 12px 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.menu li:last-child {
+			border-bottom: none;
+		}
+
+		.main {
+			width: 800px;
+			height: 600px;
+			border: 1px solid #ccc;
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="app">
+
+		<ul class="menu">
+			<li><router-link to="/">首页</router-link></li>
+			<li><router-link to="/list">关于我们</router-link></li>
+		</ul>
+
+		<router-view></router-view>
+	</div>
+
+	<template id="list_template">
+	  <div class="main">
+	    <div class="loading" v-if="loading">
+	      Loading...
+	    </div>
+
+	    <div v-if="error" class="error">
+	      {{ error }}
+	    </div>
+
+	    <div v-if="post" class="content">
+	      <h2>{{ post.title }}</h2>
+	      <p>{{ post.body }}</p>
+	    </div>
+	  </div>
+	</template>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script src="./vue-resource.js"></script>
+	<script>
+
+
+		var Home = Vue.extend({		
+			template: '<div class="main">主页的内容</div>'
+		});
+
+
+		// 2. 组件内的钩子函数
+		var List = Vue.extend({
+			data () {
+		    return {
+		      loading: false,
+		      post: null,
+		      error: null
+		    }
+		  },
+		  created () {
+		    // 组件创建完后获取数据，
+		    // 此时 data 已经被 observed 了
+		    this.fetchData()
+		  },
+		  watch: {
+		    // 如果路由有变化，会再次执行该方法
+		    '$route': 'fetchData'
+		  },
+		  methods: {
+		    fetchData () {
+		      this.error = this.post = null
+		      this.loading = true
+		      // replace getPost with your data fetching util / API wrapper
+		      this.$http.get('http://localhost:8080/RenRenKeJi/ListStudentAll.action', {params:{currentPage: 2}}).then(function(resp){
+		      	// this.loading = false;
+		      	// this.post = post
+
+		      	console.log(resp)
+
+		      }, function(resp){
+
+		      });
+		    }
+		  },
+			template: '#list_template'
+
+		});
+
+
+
+		var routes = [
+			{
+				path: '/', 
+				name: 'home',
+				component: Home
+			},
+			{
+				path: '/list', 
+				name: 'list',
+				component: List
+	    }
+		];
+
+		var router = new VueRouter({
+			routes: routes
+		});
+
+		var vm = new Vue({
+			el: '#app',
+			router: router
+		});
+	</script>
+</body>
+</html>

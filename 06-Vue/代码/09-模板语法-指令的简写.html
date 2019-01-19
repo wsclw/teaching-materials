@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+       <input type="text" @keyup.enter="sayHello" v-model.number="message">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>window.Vue || document.write('<script src="./vue.js"><\/script>')</script>
+    <script>
+    
+    // 创建Vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        },
+        methods: {
+            sayHello: function() {
+                console.log(this.message)
+            }
+        }
+    });
+
+    
+
+    </script>
+
+</body>
+</html>

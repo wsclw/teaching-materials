@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+		<style>
+
+		.menu {
+			list-style: none;
+			width: 200px;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.menu li {
+			float: left;
+		}
+
+		.menu li a {
+			display: block;
+			padding: 6px 12px;
+			color: #444;
+			text-decoration: none;
+			border: 1px solid #ccc;
+			margin-right: 8px; 
+		}
+
+		.menu li a:hover {
+			color: #db2312;
+		}
+
+		.main {
+			width: 600px;
+			height: 400px;
+			border: 1px solid #ccc;
+		}
+
+
+	</style>
+</head>
+<body>
+	
+	<div id="app">
+		<ul class="menu">
+			<li><router-link to="/list/1">1</router-link></li>
+			<li><router-link to="/list/2">2</router-link></li>
+			<li><router-link to="/list/3">3</router-link></li>
+			<li><router-link to="/list/4">4</router-link></li>
+		</ul>
+	
+		<router-view></router-view>
+	</div>
+
+	<script src="./vue.js"></script>
+	<script src="./vue-router.js"></script>
+	<script>
+		
+		// 1. 创建组件
+		var Home = Vue.extend({
+			template: '<div class="main" @click="getRoute">你点击的是第{{$route.params.page}}页</div>',
+			watch: {
+				'$route': {
+					handler: function(newValue, oldValue){
+						console.log(newValue.)
+					}
+				}
+			},
+			methods: {
+				getRoute: function(){
+					console.log(this.$route);
+				}
+			}
+		});
+
+
+		// 2. 配置路由规则
+		// 每个路由应该对应到一个组件。
+		var myRoutes = [
+			{
+				path: '/list/:page', 
+				component: Home
+			}
+		];
+
+
+		// 3. 创建一个VueRouter的实例对象
+		var myRouter = new VueRouter({
+
+			routes: myRoutes
+
+		});
+
+		// 4. 创建Vue实例，将上一步创建的VueRouter实例赋值给router选项
+		var vm = new Vue({
+
+			router: myRouter
+
+		}).$mount('#app');
+
+
+	</script>
+</body>
+</html>

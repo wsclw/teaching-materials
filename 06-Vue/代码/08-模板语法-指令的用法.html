@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <div>
+            <h1 v-bind:id="myid">v-bind</h1>
+            <h1 :id="myid">v-bind简写</h1>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>window.Vue || document.write('<script src="./vue.js"><\/script>')</script>
+    <script>
+    
+    // 创建Vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            myid: 'header'
+        }
+    });
+
+    </script>
+</body>
+</html>
